@@ -37,6 +37,7 @@ public class GamePanel extends JPanel implements Runnable{
         clock = new Clock(GAME_WIDTH, GAME_HEIGHT);
         audio = new Audio();
 
+
         this.setFocusable(true);
         this.addKeyListener(new AL());
         this.setPreferredSize(SCREEN_SIZE);
@@ -108,12 +109,21 @@ public class GamePanel extends JPanel implements Runnable{
             bounce.bounceCounter++;
             ball.xVelocity = Math.abs(ball.xVelocity);
 
-            if(ball.xVelocity < 13) { //so the ball won't speed up forever
+            //the ball won't speed up forever...
+            if(ball.xVelocity < 13) {
                 ball.xVelocity++;
                 if (ball.yVelocity > 0)
                     ball.yVelocity++;
                 else
                     ball.yVelocity--;
+            }
+            //...but after 20 bounces it will speed up +0.5:
+            else if(bounce.bounceCounter > 14){
+                ball.xVelocity += 0.5;
+                if (ball.yVelocity > 0)
+                    ball.yVelocity += 0.5;
+                else
+                    ball.yVelocity -= 0.5;
             }
             ball.setXDirection(ball.xVelocity);
             ball.setYDirection(ball.yVelocity);
@@ -130,13 +140,23 @@ public class GamePanel extends JPanel implements Runnable{
             bounce.bounceCounter++;
             ball.xVelocity = Math.abs(ball.xVelocity);
 
-            if(ball.xVelocity < 13) { //so the ball won't speed up forever
+            //the ball won't speed up forever...
+            if(ball.xVelocity < 13) {
                 ball.xVelocity++;
                 if (ball.yVelocity > 0)
                     ball.yVelocity++;
                 else
                     ball.yVelocity--;
             }
+            //...but after 20 bounces it will speed up +0.5:
+            if(bounce.bounceCounter > 14) {
+                ball.xVelocity += 0.5;
+                if (ball.yVelocity > 0)
+                    ball.yVelocity += 0.5;
+                else
+                    ball.yVelocity -= 0.5;
+            }
+
             ball.setXDirection(-ball.xVelocity);
             ball.setYDirection(ball.yVelocity);
 
@@ -189,8 +209,14 @@ public class GamePanel extends JPanel implements Runnable{
         }
     }
 
-    public void run(){
+    public void run() {
         //game loop:
+
+        try {
+            Thread.sleep(2000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
 
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
@@ -206,17 +232,16 @@ public class GamePanel extends JPanel implements Runnable{
 //        catch (InterruptedException e) {
 //            e.printStackTrace();
 //        }
-
-        while(true) {
-            long now = System.nanoTime();
-            delta += (now -lastTime)/ns;
-            lastTime = now;
-            if(delta >=1) {
-                move();
-                checkCollision();
-                repaint();
-                delta--;
-            }
+        while (true) {
+                long now = System.nanoTime();
+                delta += (now - lastTime) / ns;
+                lastTime = now;
+                if (delta >= 1) {
+                    move();
+                    checkCollision();
+                    repaint();
+                    delta--;
+                }
         }
     }
     public class AL extends KeyAdapter{
