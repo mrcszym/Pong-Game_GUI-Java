@@ -12,26 +12,39 @@ public class Paddle extends Rectangle{
     }
 
     public void keyPressed(KeyEvent e) {
-        switch(id) {
+
+        //ESC is closing app:
+        if(e.getKeyCode() == 27){
+            System.out.println("Paddle - exit (ESC)");
+            System.exit(0);
+        }
+
+        if(e.getKeyCode() == 32){
+            System.out.println("Paddle - back to menu (SPACE)");
+            
+        }
+
+        switch (id) {
             case 1:
-                if(e.getKeyCode()==KeyEvent.VK_W) {
+                if (e.getKeyCode() == KeyEvent.VK_W) {
                     setYDirection(-speed);
                 }
-                if(e.getKeyCode()==KeyEvent.VK_S) {
+                if (e.getKeyCode() == KeyEvent.VK_S) {
                     setYDirection(speed);
                 }
                 break;
             case 2:
-                if(e.getKeyCode()==KeyEvent.VK_UP) {
+                if (e.getKeyCode() == KeyEvent.VK_UP) {
                     setYDirection(-speed);
                 }
-                if(e.getKeyCode()==KeyEvent.VK_DOWN) {
+                if (e.getKeyCode() == KeyEvent.VK_DOWN) {
                     setYDirection(speed);
                 }
                 break;
         }
     }
     public void keyReleased(KeyEvent e) {
+
         switch(id) {
             case 1:
                 if(e.getKeyCode()==KeyEvent.VK_W) {

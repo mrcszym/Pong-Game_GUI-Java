@@ -1,7 +1,7 @@
 import javax.swing.*;
 import java.awt.*;
 
-public class GameFrame extends JFrame{
+public class GameFrame extends JFrame {
 
     GamePanel panel;
 
@@ -20,18 +20,17 @@ public class GameFrame extends JFrame{
         this.setBackground(Color.DARK_GRAY); //starting color
         this.setVisible(true);
         this.setLocationRelativeTo(null);
-
         panel.checkCollision();
 
         //changing background colors:
-        while(true){
+        while (true) {
             Thread.sleep(2000);
             changeBackground();
         }
-
     }
-    public void changeBackground(){
+
+    public void changeBackground() {
         //radnom rgb colors:
-        setBackground(new Color((int)(Math.random() * 0x1000000)));
+        setBackground(new Color((int) (Math.random() * 0x1000000)));
     }
 }

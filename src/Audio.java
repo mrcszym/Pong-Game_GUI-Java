@@ -4,6 +4,14 @@ import java.io.IOException;
 
 public class Audio {
     //i hope all of the methods names explains what are they for
+
+    public void audioOnLaunch() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
+        File file = new File("audio/start_launch.wav");
+        AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);
+        Clip clip = AudioSystem.getClip();
+        clip.open(audioStream);
+        clip.start();
+    }
     public void audioOnStart() throws IOException, LineUnavailableException, UnsupportedAudioFileException {
         File file = new File("audio/start_game.wav");
         AudioInputStream audioStream = AudioSystem.getAudioInputStream(file);

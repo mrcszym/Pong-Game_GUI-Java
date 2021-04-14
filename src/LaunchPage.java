@@ -1,9 +1,12 @@
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.UnsupportedAudioFileException;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.io.IOException;
 
-public class LaunchPage implements ActionListener {
+public class LaunchPage implements ActionListener{
 
     JFrame frame = new JFrame();
     JButton playButton = new JButton("Play");
@@ -11,7 +14,16 @@ public class LaunchPage implements ActionListener {
 
     boolean isPlayButtonClicked = false;
 
+    Audio audio = new Audio();
+
     LaunchPage(){
+
+        try {
+            audio.audioOnLaunch();
+        } catch (IOException | LineUnavailableException
+                | UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
 
         playButton.setBounds(50,100,300,80);
         playButton.setFocusable(false);
@@ -30,9 +42,10 @@ public class LaunchPage implements ActionListener {
         frame.add(playButton);
         frame.add(exitButton);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.setSize(420,420);
+        frame.setSize(GamePanel.GAME_WIDTH,GamePanel.GAME_HEIGHT);
         frame.setLayout(null);
-        frame.setBackground(Color.black);
+
+        frame.getContentPane().setBackground(Color.black);
         frame.setVisible(true);
         frame.setTitle("Welcome to PONG  //github: mrcszym");
         frame.setResizable(false);
