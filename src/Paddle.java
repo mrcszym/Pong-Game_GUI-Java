@@ -21,7 +21,7 @@ public class Paddle extends Rectangle{
 
         if(e.getKeyCode() == 32){
             System.out.println("Paddle - back to menu (SPACE)");
-            
+
         }
 
         switch (id) {
