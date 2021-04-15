@@ -47,21 +47,21 @@ public class GamePanel extends JPanel implements Runnable {
         gameThread.start();
     }
 
-    public void newBall() {
+    private void newBall() {
         random = new Random();
         ball = new Ball((GAME_WIDTH / 2) - (BALL_DIAMETER / 2), random.nextInt(GAME_HEIGHT - BALL_DIAMETER), BALL_DIAMETER, BALL_DIAMETER);
     }
 
-    public void newPaddles() {
+    private void newPaddles() {
         paddle1 = new Paddle(0, (GAME_HEIGHT / 2) - (PADDLE_HEIGHT / 2), PADDLE_WIDTH, PADDLE_HEIGHT, 1);
         paddle2 = new Paddle(GAME_WIDTH - PADDLE_WIDTH, (GAME_HEIGHT / 2) - (PADDLE_HEIGHT / 2), PADDLE_WIDTH, PADDLE_HEIGHT, 2);
     }
 
-    public void newCounter() { //new bounce counter
+    private void newCounter() { //new bounce counter
         bounce = new Bounce(GAME_WIDTH, GAME_HEIGHT);
     }
 
-    public void newClock() { //more like stopwatch actually but idc
+    private void newClock() { //more like stopwatch actually but idc
         clock = new Clock(GAME_WIDTH, GAME_HEIGHT);
     }
 
@@ -83,13 +83,13 @@ public class GamePanel extends JPanel implements Runnable {
         Toolkit.getDefaultToolkit().sync(); //for better animation
     }
 
-    public void move() {
+    private void move() {
         paddle1.move();
         paddle2.move();
         ball.move();
     }
 
-    public void checkCollision() {
+    protected void checkCollision() {
         //to keep the ball in window:
         if (ball.y <= 0) {
             ball.setYDirection(-ball.yVelocity);
@@ -241,7 +241,7 @@ public class GamePanel extends JPanel implements Runnable {
         }
     }
 
-    public class AL extends KeyAdapter{
+    private class AL extends KeyAdapter{
         public void keyPressed(KeyEvent e) {
             paddle1.keyPressed(e);
             paddle2.keyPressed(e);

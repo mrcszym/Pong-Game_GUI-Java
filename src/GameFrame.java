@@ -7,8 +7,8 @@ public class GameFrame extends JFrame {
 
     GameFrame() throws InterruptedException {
 
-        Image icon = Toolkit.getDefaultToolkit()
-                .getImage("pong-logo.png");
+        //logo (at frame and taskbar):
+        Image icon = Toolkit.getDefaultToolkit().getImage("images/pong-logo.png");
         this.setIconImage(icon);
 
         panel = new GamePanel();

@@ -7,8 +7,8 @@ public class Bounce extends Rectangle{
     int bounceCounter = 0;
 
     Bounce(int GAME_WIDTH, int GAME_HEIGHT){
-        this.GAME_WIDTH = GAME_WIDTH;
-        this.GAME_HEIGHT = GAME_HEIGHT;
+        Bounce.GAME_WIDTH = GAME_WIDTH;
+        Bounce.GAME_HEIGHT = GAME_HEIGHT;
     }
     public void draw(Graphics g){
         g.setColor(Color.white);
