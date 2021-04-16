@@ -1,5 +1,5 @@
 # Pong-Game_GUI-Java
- Upgraded version of classic Pong game with menu launch window, audio and random background colors every 2s.
+ Upgraded version of classic Pong game with menu launch window, audio and random background color every 2s.
  Game window includes score table, stopwatch and bounce counter that restarts every time player gains a point.
  The ball speeds up a little with every paddle's bounce until it reach max speed (so its still playable).
  The whole project was written in IntelliJ IDEA Community Edition by https://github.com/mrcszym.
