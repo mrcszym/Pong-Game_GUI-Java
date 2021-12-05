@@ -10,30 +10,25 @@ import java.io.IOException;
 
 public class LaunchPage extends JFrame implements ActionListener, MouseListener {
 
-    //logo (at frame and taskbar):
     Image logo = Toolkit.getDefaultToolkit().getImage("images/pong-logo.png");
-
-    //menu image (50' family playing ping pong)
     ImageIcon image = new ImageIcon("images/menu-one.png");
-
-    //menu image (man playing ping pong)
     ImageIcon image2 = new ImageIcon("images/man-play.png");
 
     Audio audio = new Audio();
 
-    JLabel label = new JLabel();    //label with steering instructions
-    JLabel photoLabel = new JLabel();   //menu image
-    JLabel secondPhotoLabel = new JLabel(); //second menu image
+    JLabel label = new JLabel();
+    JLabel photoLabel = new JLabel();
+    JLabel secondPhotoLabel = new JLabel();
 
-    JPanel buttonBackground = new JPanel(); //play & exit button background
+    JPanel buttonBackground = new JPanel();
 
     JButton playButton = new JButton("Play");
     JButton exitButton = new JButton("Exit");
 
     JFrame frame = new JFrame();
 
-    boolean isPlayButtonClicked = false; //important boolean in PongGame
-                                         //...breaks while(true) if true
+    boolean startGameFrame = false;
+
     LaunchPage(){
 
         buttonBackground.setBackground(Color.gray);
@@ -66,7 +61,6 @@ public class LaunchPage extends JFrame implements ActionListener, MouseListener 
         label.setIconTextGap(-25);
         label.setFont(new Font("Monospaced Bold", Font.PLAIN, 30));
 
-        //using HTML markers to edit text in JLabel:
         label.setText("<html><center>Steering:</center>Player 1:<center>W (paddle up)" +
                 "</center><center>S (paddle down)</center>" +
                 "Player 2:<center>Up Arrow (paddle up)</center>" +
@@ -90,7 +84,6 @@ public class LaunchPage extends JFrame implements ActionListener, MouseListener 
         secondPhotoLabel.setHorizontalAlignment(JLabel.CENTER);
         secondPhotoLabel.setBounds(0, 0, image.getIconWidth(),image.getIconHeight()+800);
 
-        //all frame settings:
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.setSize(GamePanel.GAME_WIDTH,GamePanel.GAME_HEIGHT);
         frame.setIconImage(logo);
@@ -113,8 +106,8 @@ public class LaunchPage extends JFrame implements ActionListener, MouseListener 
     @Override
     public void actionPerformed(ActionEvent e) {
         if(e.getSource() == playButton) {
-            frame.dispose();    //closing frame...
-            isPlayButtonClicked = true; //...and in PongGame class starting GameFrame
+            frame.dispose();
+            startGameFrame = true;
         }
         if(e.getSource() == exitButton){
             System.exit(0);
@@ -123,7 +116,7 @@ public class LaunchPage extends JFrame implements ActionListener, MouseListener 
     @Override
     public void mouseEntered(MouseEvent e) {
         try {
-            audio.audioMenuMouse(); //GTA San Andreas mood
+            audio.audioMenuMouse();
         } catch (IOException | UnsupportedAudioFileException | LineUnavailableException ioException) {
             ioException.printStackTrace();
         }
@@ -137,7 +130,6 @@ public class LaunchPage extends JFrame implements ActionListener, MouseListener 
     }
     @Override
     public void mouseClicked(MouseEvent e) {
-
     }
     @Override
     public void mousePressed(MouseEvent e) {

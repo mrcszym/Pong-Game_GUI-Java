@@ -10,7 +10,7 @@ import java.util.Random;
 public class GamePanel extends JPanel implements Runnable {
 
     static final int GAME_WIDTH = 1500;
-    static final int GAME_HEIGHT = (int) (GAME_WIDTH * (0.5555)); //nice court scale
+    static final int GAME_HEIGHT = (int) (GAME_WIDTH * (0.5555));
     static final Dimension SCREEN_SIZE = new Dimension(GAME_WIDTH, GAME_HEIGHT);
     static final int BALL_DIAMETER = 20;
     static final int PADDLE_WIDTH = 25;
@@ -80,7 +80,7 @@ public class GamePanel extends JPanel implements Runnable {
         bounce.draw(g);
         clock.draw(g);
 
-        Toolkit.getDefaultToolkit().sync(); //for better animation
+        Toolkit.getDefaultToolkit().sync();
     }
 
     private void move() {
@@ -89,8 +89,7 @@ public class GamePanel extends JPanel implements Runnable {
         ball.move();
     }
 
-    protected void checkCollision() {
-        //to keep the ball in window:
+    private void checkIfBallIsInTheWindow() {
         if (ball.y <= 0) {
             ball.setYDirection(-ball.yVelocity);
             try {
@@ -109,28 +108,58 @@ public class GamePanel extends JPanel implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
 
-        //to bounce the ball of paddles:
+    private void menageBallSpeed() {
+        if (ball.xVelocity < 13) {
+            ball.xVelocity++;
+            if (ball.yVelocity > 0)
+                ball.yVelocity++;
+            else
+                ball.yVelocity--;
+        }
+
+        if (bounce.bounceCounter > 14) {
+            ball.xVelocity += 0.5;
+            if (ball.yVelocity > 0)
+                ball.yVelocity += 0.5;
+            else
+                ball.yVelocity -= 0.5;
+        }
+    }
+
+    private void givePointToPlayerTwo() {
+        try {
+            audio.audioOnPointOne();
+        } catch (IOException | LineUnavailableException
+                | UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
+        score.player2++;
+    }
+
+    private void givePointToPlayerOne() {
+        try {
+            audio.audioOnPointTwo();
+        } catch (IOException | LineUnavailableException
+                | UnsupportedAudioFileException e) {
+            e.printStackTrace();
+        }
+        score.player1++;
+    }
+
+    private void makeNewGameObjects() {
+        newPaddles();
+        newBall();
+        newCounter();
+        newClock();
+    }
+
+    private void bounceBallOfPaddles() {
         if (ball.intersects(paddle1)) {
             bounce.bounceCounter++;
             ball.xVelocity = Math.abs(ball.xVelocity);
 
-            //the ball won't speed up +1 forever...
-            if (ball.xVelocity < 13) {
-                ball.xVelocity++;
-                if (ball.yVelocity > 0)
-                    ball.yVelocity++;
-                else
-                    ball.yVelocity--;
-            }
-            //...but after 20 bounces it will speed up +0.5:
-            else if (bounce.bounceCounter > 14) {
-                ball.xVelocity += 0.5;
-                if (ball.yVelocity > 0)
-                    ball.yVelocity += 0.5;
-                else
-                    ball.yVelocity -= 0.5;
-            }
             ball.setXDirection(ball.xVelocity);
             ball.setYDirection(ball.yVelocity);
 
@@ -146,23 +175,6 @@ public class GamePanel extends JPanel implements Runnable {
             bounce.bounceCounter++;
             ball.xVelocity = Math.abs(ball.xVelocity);
 
-            //the ball won't speed up +1 forever...
-            if (ball.xVelocity < 13) {
-                ball.xVelocity++;
-                if (ball.yVelocity > 0)
-                    ball.yVelocity++;
-                else
-                    ball.yVelocity--;
-            }
-            //...but after 20 bounces it will speed up +0.5:
-            if (bounce.bounceCounter > 14) {
-                ball.xVelocity += 0.5;
-                if (ball.yVelocity > 0)
-                    ball.yVelocity += 0.5;
-                else
-                    ball.yVelocity -= 0.5;
-            }
-
             ball.setXDirection(-ball.xVelocity);
             ball.setYDirection(ball.yVelocity);
 
@@ -173,8 +185,9 @@ public class GamePanel extends JPanel implements Runnable {
                 e.printStackTrace();
             }
         }
+    }
 
-        //keeps paddles in window:
+    private void keepPaddlesInWindow() {
         if (paddle1.y <= 0)
             paddle1.y = 0;
         if (paddle1.y >= (GAME_HEIGHT - PADDLE_HEIGHT))
@@ -183,39 +196,27 @@ public class GamePanel extends JPanel implements Runnable {
             paddle2.y = 0;
         if (paddle2.y >= (GAME_HEIGHT - PADDLE_HEIGHT))
             paddle2.y = GAME_HEIGHT - PADDLE_HEIGHT;
+    }
 
-        // gives a point to round winner;
-        // creates new: ball, paddles, bounce counter, clock:
+    protected void menageCollisions() {
+
+        checkIfBallIsInTheWindow();
+
+        bounceBallOfPaddles();
+
+        keepPaddlesInWindow();
+
         if (ball.x <= 0) {
-            try {
-                audio.audioOnPointOne();
-            } catch (IOException | LineUnavailableException
-                    | UnsupportedAudioFileException e) {
-                e.printStackTrace();
-            }
-            score.player2++;
-            newPaddles();
-            newBall();
-            newCounter();
-            newClock();
+            givePointToPlayerTwo();
+            makeNewGameObjects();
         }
         if (ball.x >= GAME_WIDTH - BALL_DIAMETER) {
-            try {
-                audio.audioOnPointTwo();
-            } catch (IOException | LineUnavailableException
-                    | UnsupportedAudioFileException e) {
-                e.printStackTrace();
-            }
-            score.player1++;
-            newPaddles();
-            newBall();
-            newCounter();
-            newClock();
+            givePointToPlayerOne();
+            makeNewGameObjects();
         }
     }
 
     public void run(){
-        //game loop:
 
         long lastTime = System.nanoTime();
         double amountOfTicks = 60.0;
@@ -232,9 +233,10 @@ public class GamePanel extends JPanel implements Runnable {
             long now = System.nanoTime();
             delta += (now - lastTime) / ns;
             lastTime = now;
+
             if (delta >= 1) {
                 move();
-                checkCollision();
+                menageCollisions();
                 repaint();
                 delta--;
             }

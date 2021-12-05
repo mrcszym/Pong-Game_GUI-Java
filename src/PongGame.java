@@ -1,4 +1,3 @@
-
 public class PongGame {
 
     static boolean gameIsOn = true;
@@ -16,11 +15,9 @@ public class PongGame {
 
         LaunchPage launchPage = new LaunchPage();
 
-        //if isPlayButtonClicked has been clicked (and so the LaunchPage is closed)
-        //...the GameFrame is starting its job:
         while (true) {
-            System.out.print(""); //better keep it here..
-            if (launchPage.isPlayButtonClicked) {
+            System.out.print("");
+            if (launchPage.startGameFrame) {
                 frame = new GameFrame();
                 break;
             }

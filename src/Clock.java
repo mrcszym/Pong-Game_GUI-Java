@@ -10,7 +10,7 @@ public class Clock extends Rectangle{
         Clock.GAME_WIDTH = GAME_WIDTH;
         Clock.GAME_HEIGHT = GAME_HEIGHT;
     }
-    public void draw(Graphics g){
+    protected void draw(Graphics g){
         g.setColor(Color.white);
         g.setFont(new Font("Monospaced Bold", Font.ITALIC, 30));
 

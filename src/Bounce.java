@@ -10,7 +10,7 @@ public class Bounce extends Rectangle{
         Bounce.GAME_WIDTH = GAME_WIDTH;
         Bounce.GAME_HEIGHT = GAME_HEIGHT;
     }
-    public void draw(Graphics g){
+    protected void draw(Graphics g){
         g.setColor(Color.white);
         g.setFont(new Font("Monospaced Bold", Font.ITALIC, 30));
         g.drawString("bounce: " + bounceCounter, (GAME_WIDTH/2)-160, (GAME_HEIGHT/5)-80);
